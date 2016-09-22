@@ -6,7 +6,7 @@ class InvalidDieException(Exception):
 	def __init__(self, die):
 		self.die = die
 	def __str__(self):
-		return "Error: IT'S OVER 9000!!!!1!11!11!one!!11" + self.die
+		return "Error: IT'S OVER 9000!!!!1!11!11!one!!11"
 
 
 class DiscordBot:
