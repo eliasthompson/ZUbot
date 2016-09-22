@@ -20,14 +20,14 @@ class DiscordBot:
 		self.commandString = self.config.get(
 			'settings', 'commandString', fallback='!'
 		)
-        
+
 	def cReload(self):
 		self.loadCommands()
 		self.loadChannels()
 		self.loadAdmins()
 		self.loadIgnore()
-        
-        
+
+
 	def loadCommands(self):
 		self.commands = {}
 		commandsFile = self.config.get(
@@ -37,7 +37,7 @@ class DiscordBot:
 		f = open(commandsFile, 'r')
 
 		commandGroup = ''
-		
+
 		for line in f:
 			# Detect beginning of new commandGroup, "[[name]]"
 			m = re.match('\[\[(.*)\]\]', line)
@@ -45,18 +45,18 @@ class DiscordBot:
 				commandGroup = m.group(1)
 				self.commands[commandGroup] = {}
 				continue
-			
+
 			# If no current commandGroup is set, ignore this line
 			if not commandGroup:
 				continue
-				
+
 			(command, response) = line.split("\t", 1)
 			if command in self.commands[commandGroup]:
 				self.commands[commandGroup][command].append(response.strip())
-				
+
 			else:
 				self.commands[commandGroup][command]=[response.strip()]
-				
+
 		f.close()
 
 
@@ -65,9 +65,9 @@ class DiscordBot:
 			'files', 'channels', fallback='channels.txt'
 		)
 		f = open(channelsFile, 'r')
-		
+
 		self.commandGroups = {}
-		
+
 		for line in f:
 			(channelId, commandGroups) = line.split("\t", 1)
 			self.commandGroups[channelId] = commandGroups.strip().split(",")
@@ -77,32 +77,32 @@ class DiscordBot:
 
 	def loadAdmins(self):
 		self.admins=[]
-		
+
 		adminsFile = self.config.get(
 			'files', 'admins', fallback='admins.txt'
 		)
 		f = open(adminsFile, 'r')
-		
+
 		for line in f:
 			id = line.strip()
 			if id != '': self.admins.append(id)
-			
-		
+
+
 		f.close()
-	
+
 	def loadIgnore(self):
 		self.ignore=[]
-		
+
 		ignoreFile = self.config.get(
 			'files', 'ignore', fallback='ignore.txt'
 		)
 		f = open(ignoreFile, 'r')
-		
+
 		for line in f:
 			id = line.strip()
 			if id != '': self.ignore.append(id)
-			
-		
+
+
 		f.close()
 
 	def handleLogin(self, user):
@@ -125,21 +125,22 @@ class DiscordBot:
 
 	def isIgnored(self, user):
 		return (user.id in self.ignore or user == self.user)
-		
 
-	def say(self, channel, message):
-		self.client.send_message(channel, message)
+
+	async def say(self, channel, message):
+		print('\033[1;34m[\033[0;31;1m' + str(channel) + '\033[1;34m]\033[0;32m Replying\033[0;33;1m: \033[0;32;1m' + str(message) + '\033[0;32m')
+		await self.client.send_message(channel, message)
 		sleep(1)
 
 
-	def handleCommand(self, channel, message, sender):
+	async def handleCommand(self, channel, message, sender):
 		# Are we listening in this channel?
 		if channel.id not in self.commandGroups:
 			return
-		
+
 		# Get the list of commandGroups for this channel
 		commandGroups = self.commandGroups[channel.id]
-		
+
 		# Working backwards from the end of the string, remove
 		# words until a command is found
 		cmd = message.strip()
@@ -149,28 +150,28 @@ class DiscordBot:
 			rawResponse = self.getRawCommandResponse(commandGroups, cmd.strip(), params.strip())
 			if rawResponse != False:
 				break
-			
+
 			spl = cmd.rsplit(' ',1)
-			if len(spl) == 1: 
+			if len(spl) == 1:
 				break
 			cmd = spl[0]
 			params = spl[1] + ' ' + params
 
 		if rawResponse != False:
-			self.processCommandResponse(channel, rawResponse, sender, params.strip())
-		
+			await self.processCommandResponse(channel, rawResponse, sender, params.strip())
+
 
 	def getRawCommandResponse(self, commandGroups, cmd, params):
 		# Single-spacify the command
 		cmd = ' '.join(cmd.split()).lower()
-		
+
 		# Iterate over all commandGroups for the current channel
 		for g in commandGroups:
 			if g in self.commands:
 				if cmd in self.commands[g] and params == '':
 					# Exact command match with no params
 					return random.choice(self.commands[g][cmd])
-				
+
 				elif (cmd + ' *') in self.commands[g] and params != '':
 					return random.choice(self.commands[g][cmd + ' *'])
 
@@ -178,25 +179,25 @@ class DiscordBot:
 		return False
 
 
-	def processCommandResponse(self, channel, response, sender, params):
+	async def processCommandResponse(self, channel, response, sender, params):
 		if "%LIST%" in response:
 			# Need to get a list of subkeys. Out of scope right now.
 			response = response.replace(
 				"%LIST%", "This function is not yet implemented"
 			)
-		
+
 		if "%SENDER%" in response:
 			response = response.replace("%SENDER%", sender.name)
-			
+
 		if "%INPUT%" in response:
 			response = response.replace("%INPUT%", params)
-		
+
 		if "%CHOICE%" in response:
 			response = response.replace(
 				"%CHOICE%",
 				random.choice(params.split(',')).strip()
 			)
-		
+
 		if "%ROLL%" in response:
 			try:
 				response = response.replace(
@@ -213,7 +214,7 @@ class DiscordBot:
 			response = response.replace("%RANDOM_XKCD%", self.getRandomXkcd())
 
 
-		self.say(channel, response)
+		await self.say(channel, response)
 
 
 	def diceRoll(self, dice):
@@ -232,7 +233,7 @@ class DiscordBot:
 				sides = int(dieDef[1])
 			except ValueError:
 				raise InvalidDieException(die)
-			
+
 			if number > 20 or number < 1 or sides > 1000 or sides < 1:
 				raise InvalidDieException(die)
 
@@ -265,33 +266,33 @@ class DiscordBot:
 
 		return self.getXkcd(random.randint(1, latest))
 
-		
-	def handleSystemCommand(self, channel, message, sender):
+
+	async def handleSystemCommand(self, channel, message, sender):
 		if not channel.is_private: return
-		
+
 		(cmd, params) = (message.strip() + ' ').split(' ', 1)
 		cmd = cmd.lower()
-		
+
 		# General commands
 
 		if cmd == 'whoami':
-			self.say(channel, 'Your name is {} and your id is {}'
+			await self.say(channel, 'Your name is {} and your id is {}'
 				.format(sender.name, sender.id))
 
 		# Admin commands
-		
+
 		if not self.isAdmin(sender): return
 
 		if cmd == 'reload':
 			self.cReload()
-			self.say(channel, 'Reloaded!')
+			await self.say(channel, 'Reloaded!')
 		if cmd == 'stop':
-			self.say(channel, 'Shutting down.')
+			await self.say(channel, 'Shutting down.')
 			self.client.logout()
 		if cmd == 'channels':
-			self.say(channel, 'Channel list:')
-			for s in self.client.servers:
-				self.say(channel, 'Server: {}\n'.format(s.name))
+			await self.say(channel, 'Channel list:')
+			for s in self.list(client.servers):
+				await self.say(channel, 'Server: {}\n'.format(s.name))
 				for c in s.channels:
 					if c.type == 'text':
 						r = "-- {} (id: {})\n".format(
@@ -303,29 +304,53 @@ class DiscordBot:
 							)
 						else:
 							r += "---- (Channel not monitored)\n"
-						self.say(channel, r)
-		
+						await self.say(channel, r)
+
 
 
 rfwbot = DiscordBot('config/rfwbot.conf')
 client = rfwbot.connect();
 
-@client.event
-def on_message(message):
+@client.async_event
+async def on_message(message):
+	print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;36;1m ' + str(message.author) + '\033[0;33;1m: \033[0;32;1m' + str(message.content) + '\033[0;32m')
 	if not rfwbot.isIgnored(message.author):
 		if message.content.startswith(rfwbot.commandString):
 			command = message.content[len(rfwbot.commandString):]
+			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m Command Detected\033[0;33;1m: \033[0;31;1m' + command + '\033[0;32m')
 			if command.startswith(rfwbot.commandString):
 				# System commands start with !!
 				command = command[len(rfwbot.commandString):]
-				rfwbot.handleSystemCommand(message.channel, command, message.author)
+				await rfwbot.handleSystemCommand(message.channel, command, message.author)
 			else:
-				rfwbot.handleCommand(message.channel, command, message.author)
+				await rfwbot.handleCommand(message.channel, command, message.author)
 
-@client.event
+		# Table Flip Correction
+		elif '(╯°□°）╯︵ ┻━┻' in message.content:
+			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m Table Flip Detected\033[0;32m')
+			msg  = ''
+			for x in range(0, message.content.count('(╯°□°）╯︵ ┻━┻')):
+				if x != 0:
+					msg += ' '
+
+				msg += '┳━┳ノ(°-°ノ)'
+
+			await rfwbot.say(message.channel, msg)
+
+		# Table Flip Correction
+		elif 'best game of all time' in message.content or 'Best game of all time' in message.content:
+			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m BGOAT Detected\033[0;32m')
+			await rfwbot.say(message.channel, 'The best game of all time is Metroid: Other M, of course.')
+
+		# Table Flip Correction
+		elif 'worst game of all time' in message.content or 'Worst game of all time' in message.content:
+			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m WGOAT Detected\033[0;32m')
+			await rfwbot.say(message.channel, 'Metroid Evolution. Duh.')
+
+
+@client.async_event
 def on_ready():
 	rfwbot.handleLogin(client.user)
 
 
-
-client.run()
+client.run(rfwbot.config['authentication']['password'])

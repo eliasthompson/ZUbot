@@ -1,0 +1,3 @@
+[[basics]]
+roll *	%SENDER% rolled %INPUT% for a result of %ROLL%
+roll	Please specify the dice to roll
