@@ -6,7 +6,7 @@ class InvalidDieException(Exception):
 	def __init__(self, die):
 		self.die = die
 	def __str__(self):
-		return "Invalid die description: " + self.die
+		return "Error: IT'S OVER 9000!!!!1!11!11!one!!11" + self.die
 
 
 class DiscordBot:
@@ -234,7 +234,7 @@ class DiscordBot:
 			except ValueError:
 				raise InvalidDieException(die)
 
-			if number > 20 or number < 1 or sides > 1000 or sides < 1:
+			if number > 20 or number < 1 or sides > 9000 or sides < 1:
 				raise InvalidDieException(die)
 
 			for i in range(number):
