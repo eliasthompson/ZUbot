@@ -3,10 +3,16 @@ import discord, configparser, random, re, requests
 from time import sleep
 
 class InvalidDieException(Exception):
-	def __init__(self, die):
+	def __init__(self, die, error='invalid'):
 		self.die = die
+		self.error = error
 	def __str__(self):
-		return "Error: IT'S OVER 9000!!!!1!11!11!one!!11"
+		if self.error == 'too many die':
+			return "Error: Too many die. Slow your roll."
+		if self.error == 'too many sides':
+			return "Error: IT'S OVER 9000!!!!1!11!11!one!!11"
+		else:
+			return "Error: Invalid Die: " + self.die
 
 
 class DiscordBot:
@@ -234,8 +240,14 @@ class DiscordBot:
 			except ValueError:
 				raise InvalidDieException(die)
 
-			if number > 20 or number < 1 or sides > 9000 or sides < 1:
+			if number < 1 or sides < 1:
 				raise InvalidDieException(die)
+
+			if number > 20:
+				raise InvalidDieException(die, 'too many die')
+
+			if sides > 9000:
+				raise InvalidDieException(die, 'too many sides')
 
 			for i in range(number):
 				rolls.append(random.randint(1,sides))
@@ -326,10 +338,10 @@ async def on_message(message):
 				await rfwbot.handleCommand(message.channel, command, message.author)
 
 		# Table Flip Correction
-		elif '(╯°□°）╯︵ ┻━┻' in message.content:
+		elif '︵ ┻━┻' in message.content:
 			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m Table Flip Detected\033[0;32m')
 			msg  = ''
-			for x in range(0, message.content.count('(╯°□°）╯︵ ┻━┻')):
+			for x in range(0, message.content.count('︵ ┻━┻')):
 				if x != 0:
 					msg += ' '
 
@@ -337,12 +349,12 @@ async def on_message(message):
 
 			await rfwbot.say(message.channel, msg)
 
-		# Table Flip Correction
+		# Best Game of all Time Reply
 		elif 'best game of all time' in message.content or 'Best game of all time' in message.content:
 			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m BGOAT Detected\033[0;32m')
 			await rfwbot.say(message.channel, 'The best game of all time is Metroid: Other M, of course.')
 
-		# Table Flip Correction
+		# Worst Game of all Time Reply
 		elif 'worst game of all time' in message.content or 'Worst game of all time' in message.content:
 			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m WGOAT Detected\033[0;32m')
 			await rfwbot.say(message.channel, 'Metroid Evolution. Duh.')
