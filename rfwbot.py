@@ -134,7 +134,8 @@ class DiscordBot:
 
 
 	async def say(self, channel, message):
-		print('\033[1;34m[\033[0;31;1m' + str(channel) + '\033[1;34m]\033[0;32m Replying\033[0;33;1m: \033[0;32;1m' + str(message) + '\033[0;32m')
+		print('\033[1;34m[\033[31m' + str(channel) + '\033[34m]\033[32m Replying ...\033[0m')
+		# print('\033[1;34m[\033[0;31;1m' + str(channel) + '\033[1;34m]\033[0;32m Replying\033[0;33;1m: \033[0;32;1m' + str(message) + '\033[0;32m')
 		await self.client.send_message(channel, message)
 		sleep(1)
 
@@ -325,11 +326,13 @@ client = rfwbot.connect();
 
 @client.async_event
 async def on_message(message):
-	print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;36;1m ' + str(message.author) + '\033[0;33;1m: \033[0;32;1m' + str(message.content) + '\033[0;32m')
+	print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[36m ' + str(message.author) + '\033[33m: \033[0m' + str(message.content))
+	# say = input('--> ')
+
 	if not rfwbot.isIgnored(message.author):
 		if message.content.startswith(rfwbot.commandString):
 			command = message.content[len(rfwbot.commandString):]
-			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m Command Detected\033[0;33;1m: \033[0;31;1m' + command + '\033[0;32m')
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Command Detected\033[033m: \033[0;33m' + command + '\033[0m')
 			if command.startswith(rfwbot.commandString):
 				# System commands start with !!
 				command = command[len(rfwbot.commandString):]
@@ -338,10 +341,25 @@ async def on_message(message):
 				await rfwbot.handleCommand(message.channel, command, message.author)
 
 		# Table Flip Correction
-		elif '︵ ┻━┻' in message.content:
-			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m Table Flip Detected\033[0;32m')
+		elif '︵ ┻━┻' in message.content or \
+			'︵  ┻━┻' in message.content or \
+			'┻━┻ ︵' in message.content or \
+			'┻━┻  ︵' in message.content or \
+			'︵ ┻─┻' in message.content or \
+			'︵  ┻─┻' in message.content or \
+			'┻─┻ ︵' in message.content or \
+			'┻─┻  ︵' in message.content or \
+			'︵ ┴━┴' in message.content or \
+			'︵  ┴━┴' in message.content or \
+			'┴━┴ ︵' in message.content or \
+			'┴━┴  ︵' in message.content or \
+			'︵ ┴─┴' in message.content or \
+			'︵  ┴─┴' in message.content or \
+			'┴─┴ ︵' in message.content or \
+			'┴─┴  ︵' in message.content:
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Table Flip Detected\033[0m')
 			msg  = ''
-			for x in range(0, message.content.count('︵ ┻━┻')):
+			for x in range(0, sum(message.content.count(y) for y in ('︵ ┻━┻', '︵  ┻━┻', '┻━┻ ︵', '┻━┻  ︵', '︵ ┻─┻', '︵  ┻─┻', '┻─┻ ︵', '┻─┻  ︵', '︵ ┴━┴', '︵  ┴━┴', '┴━┴ ︵', '┴━┴  ︵', '︵ ┴─┴', '︵  ┴─┴', '┴─┴ ︵', '┴─┴  ︵'))):
 				if x != 0:
 					msg += ' '
 
@@ -351,12 +369,12 @@ async def on_message(message):
 
 		# Best Game of all Time Reply
 		elif 'best game of all time' in message.content or 'Best game of all time' in message.content:
-			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m BGOAT Detected\033[0;32m')
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m BGOAT Detected\033[0m')
 			await rfwbot.say(message.channel, 'The best game of all time is Metroid: Other M, of course.')
 
 		# Worst Game of all Time Reply
 		elif 'worst game of all time' in message.content or 'Worst game of all time' in message.content:
-			print('\033[1;34m[\033[0;31;1m' + str(message.channel) + '\033[1;34m]\033[0;31m WGOAT Detected\033[0;32m')
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m WGOAT Detected\033[0m')
 			await rfwbot.say(message.channel, 'Metroid Evolution. Duh.')
 
 
