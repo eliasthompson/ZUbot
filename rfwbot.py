@@ -281,7 +281,9 @@ class DiscordBot:
 
 
 	async def handleSystemCommand(self, channel, message, sender):
-		if not channel.is_private: return
+		print(self.isAdmin(sender))
+		print(channel.is_private)
+		# if not channel.is_private: return
 
 		(cmd, params) = (message.strip() + ' ').split(' ', 1)
 		cmd = cmd.lower()
@@ -304,10 +306,10 @@ class DiscordBot:
 			self.client.logout()
 		if cmd == 'channels':
 			await self.say(channel, 'Channel list:')
-			for s in self.list(client.servers):
+			for s in self.client.servers:
 				await self.say(channel, 'Server: {}\n'.format(s.name))
 				for c in s.channels:
-					if c.type == 'text':
+					if str(c.type) == 'text':
 						r = "-- {} (id: {})\n".format(
 							c.name, c.id
 						)
