@@ -369,28 +369,33 @@ async def on_message(message):
 
 			await rfwbot.say(message.channel, msg)
 
+		# MHQbot Source Reply
+		elif 'mhqbot' in message.content.lower() and 'source' in message.content.lower():
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Bot Source Detected\033[0m')
+			await rfwbot.say(message.channel, 'You can view my source or fork and submit a pull request at: https://github.com/metroidhq/MHQbot')
+
 		# Best Game of all Time Reply
-		elif 'best game of all time' in message.content or 'Best game of all time' in message.content:
+		elif 'best game of all time' in message.content.lower():
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m BGOAT Detected\033[0m')
 			await rfwbot.say(message.channel, 'The best game of all time is Metroid: Other M, of course.')
 
 		# Worst Game of all Time Reply
-		elif 'worst game of all time' in message.content or 'Worst game of all time' in message.content:
+		elif 'worst game of all time' in message.content.lower():
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m WGOAT Detected\033[0m')
 			await rfwbot.say(message.channel, 'Metroid Evolution. Duh.')
 
 		# Best Norwegian
-		elif 'best norwegian of all time' in message.content or 'Best norwegian of all time' in message.content or 'best Norwegian of all time' in message.content or 'Best Norwegian of all time' in message.content:
+		elif 'best norwegian of all time' in message.content.lower():
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m BNOAT Detected\033[0m')
 			await rfwbot.say(message.channel, 'Definitely not Falcool.')
 
 		# Elias DeviantArt
-		elif ('elias' in message.content or 'Elias' in message.content) and ('art' in message.content or 'Art' in message.content):
+		elif 'elias' in message.content.lower() and 'art' in message.content.lower():
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Elias DeviantArt Detected\033[0m')
 			await rfwbot.say(message.channel, 'http://metroidmaster1914.deviantart.com/gallery/')
 
 		# Best Cancer
-		elif 'best cancer of all time' in message.content or 'Best cancer of all time' in message.content:
+		elif 'best cancer of all time' in message.content.lower():
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m BCOAT Detected\033[0m')
 			await rfwbot.say(message.channel, 'Metroid Evolution: Cancer Edition.')
 
@@ -400,12 +405,12 @@ async def on_message(message):
 			await rfwbot.say(message.channel, 'I smell a question afoot.')
 
 		# Miles Origin
-		elif ('miles' in message.content or 'Miles' in message.content) and ('where' in message.content or 'from' in message.content or 'origin' in message.content):
+		elif 'miles' in message.content.lower() and ('where' in message.content.lower() or 'from' in message.content.lower() or 'origin' in message.content.lower()):
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Miles Origin Detected\033[0m')
 			await rfwbot.say(message.channel, ':flag_ar: :flag_ar: :flag_ar: :flag_ar: :flag_ar: :flag_ar:')
 
 		# Metroid3D Origin
-		elif ('Metroid3D' in message.content or 'metroid3D' in message.content or 'Metroid3d' in message.content or 'metroid3d' in message.content) and ('code' in message.content or 'fork' in message.content or 'git' in message.content or 'Git' in message.content):
+		elif 'metroid3d' in message.content.lower() and ('code' in message.content.lower() or 'fork' in message.content.lower() or 'git' in message.content.lower()):
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Metroid3D Fork Detected\033[0m')
 			await rfwbot.say(message.channel, 'Are you guys talking about that Metroid3D guy who doesn\'t know how to use a fork?')
 
