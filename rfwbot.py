@@ -385,7 +385,7 @@ async def on_message(message):
 			await rfwbot.say(message.channel, 'Definitely not Falcool.')
 
 		# Elias DeviantArt
-		elif ('elias' in message.content or 'Elias' in message.content) and 'art' in message.content:
+		elif ('elias' in message.content or 'Elias' in message.content) and ('art' in message.content or 'Art' in message.content):
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Elias DeviantArt Detected\033[0m')
 			await rfwbot.say(message.channel, 'http://metroidmaster1914.deviantart.com/gallery/')
 
@@ -403,6 +403,11 @@ async def on_message(message):
 		elif ('miles' in message.content or 'Miles' in message.content) and ('where' in message.content or 'from' in message.content or 'origin' in message.content):
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Miles Origin Detected\033[0m')
 			await rfwbot.say(message.channel, ':flag_ar: :flag_ar: :flag_ar: :flag_ar: :flag_ar: :flag_ar:')
+
+		# Metroid3D Origin
+		elif ('Metroid3D' in message.content or 'metroid3D' in message.content or 'Metroid3d' in message.content or 'metroid3d' in message.content) and ('code' in message.content or 'fork' in message.content or 'git' in message.content or 'Git' in message.content):
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Metroid3D Fork Detected\033[0m')
+			await rfwbot.say(message.channel, 'Are you guys talking about that Metroid3D guy who doesn\'t know how to use a fork?')
 
 
 @client.async_event
