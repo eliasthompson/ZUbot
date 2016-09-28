@@ -379,6 +379,31 @@ async def on_message(message):
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m WGOAT Detected\033[0m')
 			await rfwbot.say(message.channel, 'Metroid Evolution. Duh.')
 
+		# Best Norwegian
+		elif 'best norwegian of all time' in message.content or 'Best norwegian of all time' in message.content or 'best Norwegian of all time' in message.content or 'Best Norwegian of all time' in message.content:
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m BNOAT Detected\033[0m')
+			await rfwbot.say(message.channel, 'Definitely not Falcool.')
+
+		# Elias DeviantArt
+		elif ('elias' in message.content or 'Elias' in message.content) and 'art' in message.content:
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Elias DeviantArt Detected\033[0m')
+			await rfwbot.say(message.channel, 'http://metroidmaster1914.deviantart.com/gallery/')
+
+		# Best Cancer
+		elif 'best cancer of all time' in message.content or 'Best cancer of all time' in message.content:
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m BCOAT Detected\033[0m')
+			await rfwbot.say(message.channel, 'Metroid Evolution: Cancer Edition.')
+
+		# Question
+		elif '???' in message.content:
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Question Detected\033[0m')
+			await rfwbot.say(message.channel, 'I smell a question afoot.')
+
+		# Miles Origin
+		elif ('miles' in message.content or 'Miles' in message.content) and ('where' in message.content or 'from' in message.content or 'origin' in message.content):
+			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Miles Origin Detected\033[0m')
+			await rfwbot.say(message.channel, ':flag_ar: :flag_ar: :flag_ar: :flag_ar: :flag_ar: :flag_ar:')
+
 
 @client.async_event
 def on_ready():
