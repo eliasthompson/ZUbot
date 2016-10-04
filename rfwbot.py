@@ -405,7 +405,7 @@ async def on_message(message):
 			await rfwbot.say(message.channel, 'I smell a question afoot.')
 
 		# Miles Origin
-		elif 'miles' in message.content.lower() and ('where' in message.content.lower() or 'from' in message.content.lower() or 'origin' in message.content.lower()):
+		elif 'miles' in message.content.lower() and ('where' in message.content.lower() or 'from' in message.content.lower() or 'origin' in message.content.lower()) and 'now' not in message.content.lower():
 			print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Miles Origin Detected\033[0m')
 			await rfwbot.say(message.channel, ':flag_ar: :flag_ar: :flag_ar: :flag_ar: :flag_ar: :flag_ar:')
 
