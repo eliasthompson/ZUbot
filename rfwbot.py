@@ -241,7 +241,7 @@ class DiscordBot:
 			except ValueError:
 				raise InvalidDieException(die)
 
-			if number < 1 or sides < 1:
+			if number < 1 or sides < 2:
 				raise InvalidDieException(die)
 
 			if number > 20:
