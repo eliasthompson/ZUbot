@@ -200,6 +200,7 @@ class DiscordBot:
             response = response.replace("%INPUT%", params)
 
         if "%CHOICE%" in response:
+            print(params)
             response = response.replace(
                 "%CHOICE%",
                 random.choice(params.split(',')).strip()
@@ -219,6 +220,15 @@ class DiscordBot:
 
         if "%RANDOM_XKCD%" in response:
             response = response.replace("%RANDOM_XKCD%", self.getRandomXkcd())
+
+        if "%RANDOM_SONIC%" in response:
+            response = response.replace("%RANDOM_SONIC%", self.getRandomSonic())
+
+        if "%RANDOM_FI%" in response:
+            response = response.replace("%RANDOM_FI%", self.getRandomFi())
+
+        if "%RANDOM_ELIAS%" in response:
+            response = response.replace("%RANDOM_ELIAS%", self.getRandomElias())
 
 
         await self.say(channel, response)
@@ -278,6 +288,56 @@ class DiscordBot:
             return "Sorry, I couldn't reach XKCD"
 
         return self.getXkcd(random.randint(1, latest))
+
+
+    def getRandomSonic(self):
+        responses = [
+            '<:sonic:281605314111995905> GOTTA GO FAST',
+            '<:sonic:281605314111995905> YOU\'RE TOO SLOW',
+            '<:sonic:281605314111995905> COME ON, STEP IT UP',
+            '<:sonic:281605314111995905> NOW I\'LL SHOW YOU',
+            '<:sonic:281605314111995905> TRUE FAST ISN\'T MEASURED IN MILES, IT COMES FROM THE HEART',
+            '<:sonic:281605314111995905> SONIC\'S THE NAME, SPEED\'S MY GAME',
+            '<:sonic:281605314111995905> YOOLO SWAG',
+        ]
+
+        return responses[random.randint(0, (len(responses) - 1))]
+
+
+    def getRandomFi(self):
+        responses = [
+            '<:fi:281601396581597204> I predict an 85% chance you will find my results helpful.',
+            '<:fi:281601396581597204> Signs indicate a 75% chance that it is unlikely.',
+            '<:fi:281601396581597204> I calculate an 85% chance you can obtain information about it by asking my master instead.',
+            '<:fi:281601396581597204> 80% of the room itself is covered in a blanket of sand.',
+            '<:fi:281601396581597204>  I calculate a 75% probability that visiting the fortune-teller will be helpful.',
+            '<:fi:281601396581597204> There is a 95% probability that you will discover something unexpected.',
+            '<:fi:281601396581597204> There is an 85% probability that any eventual results will be of use, Master.',
+            '<:fi:281601396581597204> I estimate you have less than a 1% chance of completing your quest.',
+            '<:fi:281601396581597204> I judge the probability of defeat at 30%.',
+            '<:fi:281601396581597204> He increased his muscle mass by 500%.',
+            '<:fi:281601396581597204> Over 80% of ghosts are said to harbor some kind of unfulfilled desire.',
+            '<:fi:281601396581597204> Sensitivity to human presence: 60%.',
+            '<:fi:281601396581597204> I project a 50% probability of failing.',
+            '<:fi:281601396581597204> You can expect at least an 85% chance that it will attempt to stab you.',
+            '<:fi:281601396581597204> I calculate the probability of your intense aggravation at 100%.',
+            '<:fi:281601396581597204> I calculate a 100% failure rate.',
+            '<:fi:281601396581597204> There is an 85% chance that something very important will occur here.',
+            '<:fi:281601396581597204> I calculate a 60% chance that a portion of the information contained in my analysis will be new to you.',
+            '<:fi:281601396581597204> I calculate a 95% chance your clothing will immediately combust upon entrance.',
+            '<:fi:281601396581597204> I can verify with only 40% accuracy that this person is a plant.',
+        ]
+
+        return responses[random.randint(0, (len(responses) - 1))]
+
+
+    def getRandomElias(self):
+        responses = [
+            '<:elias:268180756306722832> There will be cake',
+            '<:elias:268180756306722832> Twilight Princess is a Wii game',
+        ]
+
+        return responses[random.randint(0, (len(responses) - 1))]
 
 
     async def handleSystemCommand(self, channel, message, sender):
@@ -368,93 +428,6 @@ async def on_message(message):
                 msg += '┳━┳ノ(°-°ノ)'
 
             await rfwbot.say(message.channel, msg)
-
-        # FiBot Source Reply
-        elif 'fibot' in message.content.lower() and 'source' in message.content.lower():
-            print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Bot Source Detected\033[0m')
-            await rfwbot.say(message.channel, 'You can view my source or fork and submit a pull request at: https://github.com/eliasthompson/ZUbot')
-
-        # This is fine Reply
-        elif 'this is fine' in message.content.lower():
-            print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m This is Fine Detected\033[0m')
-            await rfwbot.say(message.channel, 'http://i.imgur.com/c4jt321.png')
-
-        # Fi Reply
-        elif ':fi:' in message.content.lower() or \
-            'fi should' in message.content.lower() or \
-            'fi can' in message.content.lower() or \
-            'fi will' in message.content.lower() or \
-            'fi would' in message.content.lower() or \
-            'fi do' in message.content.lower() or \
-            'fi are' in message.content.lower() or \
-            'fi is' in message.content.lower() or \
-            'fi did' in message.content.lower() or \
-            'fi what' in message.content.lower() or \
-            'fi who' in message.content.lower() or \
-            'fi where' in message.content.lower() or \
-            'fi how' in message.content.lower() or \
-            'fi when' in message.content.lower() or \
-            'fi if' in message.content.lower() or \
-            'fi why' in message.content.lower() or \
-            'fi?' in message.content.lower() or \
-            'fi am' in message.content.lower():
-            print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Fi Detected\033[0m')
-
-            responses = [
-                '<:fi:281601396581597204> I predict an 85% chance you will find my results helpful.',
-                '<:fi:281601396581597204> Signs indicate a 75% chance that it is unlikely.',
-                '<:fi:281601396581597204> I calculate an 85% chance you can obtain information about it by asking Slackbot instead.',
-                '<:fi:281601396581597204> 80% of the room itself is covered in a blanket of sand.',
-                '<:fi:281601396581597204>  I calculate a 75% probability that visiting the fortune-teller will be helpful.',
-                '<:fi:281601396581597204> There is a 95% probability that you will discover something unexpected.',
-                '<:fi:281601396581597204> There is an 85% probability that any eventual results will be of use, Master.',
-                '<:fi:281601396581597204> I estimate you have less than a 1% chance of completing your quest.',
-                '<:fi:281601396581597204> I judge the probability of defeat at 30%.',
-                '<:fi:281601396581597204> He increased his muscle mass by 500%.',
-                '<:fi:281601396581597204> Over 80% of ghosts are said to harbor some kind of unfulfilled desire.',
-                '<:fi:281601396581597204> Sensitivity to human presence: 60%.',
-                '<:fi:281601396581597204> I project a 50% probability of failing.',
-                '<:fi:281601396581597204> You can expect at least an 85% chance that it will attempt to stab you.',
-                '<:fi:281601396581597204> I calculate the probability of your intense aggravation at 100%.',
-                '<:fi:281601396581597204> I calculate a 100% failure rate.',
-                '<:fi:281601396581597204> There is an 85% chance that something very important will occur here.',
-                '<:fi:281601396581597204> I calculate a 60% chance that a portion of the information contained in my analysis will be new to you.',
-                '<:fi:281601396581597204> I calculate a 95% chance your clothing will immediately combust upon entrance.',
-                '<:fi:281601396581597204> I can verify with only 40% accuracy that this person is a plant.',
-            ]
-
-            await rfwbot.say(message.channel, responses[random.randint(0, (len(responses) - 1))])
-
-        # Elias Emoji Reply
-        elif ':elias:' in message.content.lower():
-            print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Elias Emoji Detected\033[0m')
-
-            responses = [
-                '<:elias:268180756306722832> There will be cake',
-                '<:elias:268180756306722832> Twilight Princess is a Wii game',
-            ]
-
-            await rfwbot.say(message.channel, responses[random.randint(0, (len(responses) - 1))])
-
-        # Sonic Emoji Reply
-        elif 'sonic' in message.content.lower() or \
-            'sanic' in message.content.lower() or \
-            'sonac' in message.content.lower() or \
-            'fast' in message.content.lower() or \
-            'slow' in message.content.lower():
-            print('\033[1;34m[\033[31m' + str(message.channel) + '\033[34m]\033[31m Sonic Detected\033[0m')
-
-            responses = [
-                '<:sonic:281605314111995905> GOTTA GO FAST',
-                '<:sonic:281605314111995905> YOU\'RE TOO SLOW',
-                '<:sonic:281605314111995905> COME ON, STEP IT UP',
-                '<:sonic:281605314111995905> NOW I\'LL SHOW YOU',
-                '<:sonic:281605314111995905> TRUE FAST ISN\'T MEASURED IN MILES, IT COMES FROM THE HEART',
-                '<:sonic:281605314111995905> SONIC\'S THE NAME, SPEED\'S MY GAME',
-                '<:sonic:281605314111995905> YOOLO SWAG',
-            ]
-
-            await rfwbot.say(message.channel, responses[random.randint(0, (len(responses) - 1))])
 
 
 @client.async_event
