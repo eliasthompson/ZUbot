@@ -6,5 +6,6 @@ xkcd	%RANDOM_XKCD%
 sonic	%RANDOM_SONIC%
 fi	%RANDOM_FI%
 elias	%RANDOM_ELIAS%
+froyo	Froyo last slept 1 hr 40 minutes ago. Dreamt about living the dream.
 fine	http://i.imgur.com/c4jt321.png
 source	You can view my source or fork and submit a pull request at: https://github.com/eliasthompson/ZUbot
